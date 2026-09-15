@@ -52,6 +52,8 @@
       signerPhone: "081222156655",
       logo: "",
       clientName: "PT Wingman Denim Global",
+      clientPic: "",
+      clientPhone: "",
       tableHead: "Deskripsi",
       invDate: "2026-08-20",
       invDue: "2026-08-21",
@@ -119,6 +121,8 @@
     $("signerName").value = state.signerName || "";
     $("signerPhone").value = state.signerPhone || "";
     $("clientName").value = state.clientName || "";
+    $("clientPic").value = state.clientPic || "";
+    $("clientPhone").value = state.clientPhone || "";
     $("tableHead").value = state.tableHead || "";
     $("invDate").value = state.invDate || "";
     $("invDue").value = state.invDue || "";
@@ -214,6 +218,22 @@
     $("pvDue").textContent = fmtDate(state.invDue);
     $("pvSignDate").textContent = fmtDate(state.invDate);
     $("pvClient").textContent = state.clientName || "PT Wingman Denim Global";
+    var cPic = $("pvClientPic");
+    if (state.clientPic) {
+      cPic.textContent = state.clientPic;
+      cPic.classList.remove("hidden");
+    } else {
+      cPic.textContent = "";
+      cPic.classList.add("hidden");
+    }
+    var cPhone = $("pvClientPhone");
+    if (state.clientPhone) {
+      cPhone.textContent = state.clientPhone;
+      cPhone.classList.remove("hidden");
+    } else {
+      cPhone.textContent = "";
+      cPhone.classList.add("hidden");
+    }
     $("pvHead").textContent = state.tableHead || "Deskripsi";
 
     var list = $("pvItems");
@@ -289,6 +309,8 @@
   bindText("signerName", "signerName");
   bindText("signerPhone", "signerPhone");
   bindText("clientName", "clientName");
+  bindText("clientPic", "clientPic");
+  bindText("clientPhone", "clientPhone");
   bindText("tableHead", "tableHead");
   bindText("bankName", "bankName");
   bindText("bankNumber", "bankNumber");
