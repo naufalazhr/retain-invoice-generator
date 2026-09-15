@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Invoice — Retain Solusi Bisnis</title>
+  <meta name="description" content="Invoice Generator Retain — edit cepat, cetak A4, tersimpan lokal." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23ea580c'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='800'%3ER%3C/text%3E%3C/svg%3E" />
+</head>
+<body data-tab="editor">
+
+  <header class="topbar no-print">
+    <div class="topbar-inner">
+      <div class="brand-mini">
+        <span class="brand-mini-mark">R</span>
+        <span class="brand-mini-text">
+          <strong>Retain</strong>
+          <small>Invoice Generator</small>
+        </span>
+      </div>
+      <div class="topbar-actions">
+        <span class="save-pill" id="saveIndicator"><span class="dot"></span><span id="saveText">Tersimpan otomatis</span></span>
+        <button id="btnNew" class="btn btn-ghost" type="button">Baru</button>
+        <button id="btnPrint" class="btn btn-dark" type="button">Cetak / Simpan PDF</button>
+      </div>
+    </div>
+    <div class="tabs no-print">
+      <button id="tabEditor" class="tab tab-active" type="button">Editor</button>
+      <button id="tabPreview" class="tab" type="button">Preview</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section id="editorPane" class="editor no-print">
+
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h2>Pengirim dan penandatangan</h2>
+            <p>Nama usaha, email, dan kontak di kertas.</p>
+          </div>
+          <span class="step">01</span>
+        </div>
+        <div class="logo-row">
+          <label class="logo-box" title="Upload logo">
+            <input id="logoInput" type="file" accept="image/*" class="hidden" />
+            <img id="logoPreview" alt="" class="hidden" />
+            <span id="logoPlaceholder">Logo</span>
+          </label>
+          <div class="logo-side">
+            <button id="logoRemove" class="link-danger hidden" type="button">Hapus logo</button>
+            <p class="hint">Klik kotak untuk upload logo. Default tampil teks Retain gradasi.</p>
+          </div>
+        </div>
+        <div class="grid">
+          <label class="lbl">Nama pengirim
+            <input id="senderName" class="field" type="text" placeholder="Retain Solusi Bisnis" />
+          </label>
+          <label class="lbl">Email pengirim
+            <input id="senderEmail" class="field" type="text" placeholder="ivan@retain.co.id" />
+          </label>
+          <div class="grid-2">
+            <label class="lbl">Nama penandatangan
+              <input id="signerName" class="field" type="text" placeholder="Ivan Prabumi" />
+            </label>
+            <label class="lbl">HP penandatangan
+              <input id="signerPhone" class="field" type="text" placeholder="081222156655" />
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h2>Klien dan tanggal</h2>
+            <p>Ditagihkan kepada siapa dan kapan.</p>
+          </div>
+          <span class="step">02</span>
+        </div>
+        <div class="grid">
+          <label class="lbl">Nama klien
+            <input id="clientName" class="field" type="text" placeholder="PT Wingman Denim Global" />
+          </label>
+          <div class="grid-2">
+            <label class="lbl">Tanggal terbit
+              <input id="invDate" class="field" type="date" />
+            </label>
+            <label class="lbl">Tanggal jatuh tempo
+              <input id="invDue" class="field" type="date" />
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h2>Tabel tagihan</h2>
+            <p>Header, baris item, dan total otomatis.</p>
+          </div>
+          <span class="step">03</span>
+        </div>
+        <div class="grid">
+          <label class="lbl">Teks header tabel
+            <input id="tableHead" class="field" type="text" placeholder="Deskripsi" />
+          </label>
+        </div>
+        <div id="itemsList" class="items"></div>
+        <button id="btnAddItem" class="add-item" type="button">+ Tambah baris</button>
+        <p class="total-line">Total: <strong id="editorTotal">Rp 0</strong></p>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h2>Keterangan dan tanda tangan</h2>
+            <p>Box bank dan blok tanda tangan.</p>
+          </div>
+          <span class="step">04</span>
+        </div>
+        <div class="grid">
+          <div class="grid-2">
+            <label class="lbl">Nama bank
+              <input id="bankName" class="field" type="text" placeholder="BCA" />
+            </label>
+            <label class="lbl">No. rekening
+              <input id="bankNumber" class="field" type="text" placeholder="7772861063" />
+            </label>
+          </div>
+          <label class="lbl">Pemilik rekening
+            <input id="bankOwner" class="field" type="text" placeholder="Ivan Prabumi" />
+          </label>
+          <label class="lbl">Upload tanda tangan
+            <input id="signInput" class="field" type="file" accept="image/*" />
+          </label>
+          <div class="sign-row">
+            <img id="signPreview" alt="" class="hidden" />
+            <button id="signRemove" class="link-danger hidden" type="button">Hapus tanda tangan</button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="previewPane" class="preview-wrap">
+      <p class="preview-label no-print">Live preview — A4</p>
+
+      <article id="paper" class="paper">
+        <div class="inv-top">
+          <div class="inv-brand">
+            <img id="pvLogo" class="pv-logo hidden" alt="Logo" />
+            <span id="pvLogoText" class="logo-text">Retain</span>
+          </div>
+          <div class="inv-title-block">
+            <h1>INVOICE</h1>
+            <p class="inv-date">Tanggal: <span id="pvDate">20 Agustus 2026</span></p>
+            <p class="inv-date">Tanggal Jatuh Tempo: <span id="pvDue">21 Agustus 2026</span></p>
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="inv-cols">
+          <div class="sender">
+            <p id="pvSenderName" class="sender-name">Retain Solusi Bisnis</p>
+            <p id="pvSenderEmail" class="sender-line">ivan@retain.co.id</p>
+            <p id="pvSenderContact" class="sender-line">Ivan Prabumi - 081222156655</p>
+          </div>
+          <div class="billto">
+            <p class="bill-label">TAGIHAN KEPADA:</p>
+            <p id="pvClient" class="bill-name">PT Wingman Denim Global</p>
+          </div>
+        </div>
+
+        <div class="inv-table">
+          <div class="tbl-head" id="pvHead">Deskripsi</div>
+          <div class="tbl-body" id="pvItems"></div>
+        </div>
+        <p class="tbl-total">Nominal Tagihan: <span id="pvTotal">Rp 3.076.923</span></p>
+
+        <div class="inv-bottom">
+          <div class="ket-box">
+            <p class="ket-title">KETERANGAN</p>
+            <p class="ket-line">Nama Bank: <span id="pvBankName">BCA</span></p>
+            <p class="ket-line">No. Rekening: <span id="pvBankNumber">7772861063</span></p>
+            <p class="ket-line">Pemilik Rekening: <span id="pvBankOwner">Ivan Prabumi</span></p>
+          </div>
+          <div class="sign-block">
+            <p id="pvSignDate" class="sign-date">20 Agustus 2026</p>
+            <img id="pvSignImg" class="sign-img hidden" alt="Tanda tangan" />
+            <div id="pvSignEmpty" class="sign-empty">.</div>
+            <p id="pvSignName" class="sign-name">Ivan Prabumi</p>
+          </div>
+        </div>
+      </article>
+
+      <div class="preview-actions no-print">
+        <button id="btnPrint2" class="btn btn-dark btn-full" type="button">Cetak / Simpan PDF</button>
+      </div>
+      <p class="preview-hint no-print">Tips: di dialog print pilih Save as PDF agar menjadi file PDF.</p>
+    </section>
+  </main>
+
+  <footer class="footer no-print">Retain Invoice Generator — data tersimpan lokal di browser (localStorage).</footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>
