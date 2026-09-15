@@ -54,6 +54,7 @@
       clientName: "PT Wingman Denim Global",
       clientPic: "",
       clientPhone: "",
+      showAmounts: false,
       tableHead: "Deskripsi",
       invDate: "2026-08-20",
       invDue: "2026-08-21",
@@ -123,6 +124,7 @@
     $("clientName").value = state.clientName || "";
     $("clientPic").value = state.clientPic || "";
     $("clientPhone").value = state.clientPhone || "";
+    $("showAmounts").checked = state.showAmounts === true;
     $("tableHead").value = state.tableHead || "";
     $("invDate").value = state.invDate || "";
     $("invDue").value = state.invDue || "";
@@ -246,13 +248,22 @@
         shown++;
         var div = document.createElement("div");
         div.className = "tbl-item";
+        var row = document.createElement("div");
+        row.className = "tbl-title-row";
         var t = document.createElement("p");
         t.className = "tbl-title";
         t.textContent = "• " + (it.title || "-");
+        row.appendChild(t);
+        if (state.showAmounts) {
+          var amt = document.createElement("span");
+          amt.className = "tbl-amount";
+          amt.textContent = fmtRp(it.amount);
+          row.appendChild(amt);
+        }
         var s = document.createElement("p");
         s.className = "tbl-sub";
         s.textContent = it.sub || "";
-        div.appendChild(t);
+        div.appendChild(row);
         if (it.sub) { div.appendChild(s); }
         list.appendChild(div);
       })(state.items[i]);
@@ -260,10 +271,19 @@
     if (shown === 0) {
       var empty = document.createElement("div");
       empty.className = "tbl-item";
+      var erow = document.createElement("div");
+      erow.className = "tbl-title-row";
       var p1 = document.createElement("p");
       p1.className = "tbl-title";
       p1.textContent = "• -";
-      empty.appendChild(p1);
+      erow.appendChild(p1);
+      if (state.showAmounts) {
+        var eamt = document.createElement("span");
+        eamt.className = "tbl-amount";
+        eamt.textContent = fmtRp(0);
+        erow.appendChild(eamt);
+      }
+      empty.appendChild(erow);
       list.appendChild(empty);
     }
 
@@ -315,6 +335,12 @@
   bindText("bankName", "bankName");
   bindText("bankNumber", "bankNumber");
   bindText("bankOwner", "bankOwner");
+
+  $("showAmounts").addEventListener("change", function (e) {
+    state.showAmounts = e.target.checked;
+    persist();
+    renderPreview();
+  });
 
   $("invDate").addEventListener("change", function (e) {
     state.invDate = e.target.value;
