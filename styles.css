@@ -336,7 +336,19 @@ body {
   letter-spacing: 0.02em;
   color: #000000;
 }
-.inv-date { margin: 4px 0 0; font-size: 13px; color: var(--gray); }
+.inv-dates {
+  margin-top: 6px;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  justify-content: end;
+  column-gap: 6px;
+  row-gap: 4px;
+  font-size: 13px;
+  color: var(--gray);
+}
+.inv-dlabel { text-align: left; }
+.inv-dcolon { text-align: center; }
+.inv-dval { text-align: left; }
 .divider { border: none; border-top: 1px solid var(--line); margin: 20px 0; }
 .inv-cols {
   display: grid;
