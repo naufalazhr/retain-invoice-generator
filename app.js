@@ -287,6 +287,13 @@
       list.appendChild(empty);
     }
 
+    var paper = $("paper");
+    if (shown <= 2) {
+      paper.classList.add("compact");
+    } else {
+      paper.classList.remove("compact");
+    }
+
     var total = calcTotal();
     $("pvTotal").textContent = fmtRp(total);
     $("editorTotal").textContent = fmtRp(total);
